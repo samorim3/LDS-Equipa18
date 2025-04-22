@@ -1,0 +1,87 @@
+[
+  {
+    "NomeEspaco": "Sala 1",
+    "Reservas": [
+      {
+        "NomeUtilizador": "Teste",
+        "DataHoraReserva": "2025-04-24T23:00:00+01:00",
+        "Espaco": "Sala 1"
+      },
+      {
+        "NomeUtilizador": "Teste",
+        "DataHoraReserva": "2025-04-24T23:00:44.277",
+        "Espaco": "Sala 1"
+      },
+      {
+        "NomeUtilizador": "Mais um user",
+        "DataHoraReserva": "2025-04-26T23:59:33.171",
+        "Espaco": "Sala 1"
+      }
+    ]
+  },
+  {
+    "NomeEspaco": "Sala 2",
+    "Reservas": [
+      {
+        "NomeUtilizador": "Teste",
+        "DataHoraReserva": "2025-04-22T23:10:06.3353893+01:00",
+        "Espaco": "Sala 2"
+      },
+      {
+        "NomeUtilizador": "Vasco Lopes",
+        "DataHoraReserva": "2025-04-22T23:28:57.1501363+01:00",
+        "Espaco": "Sala 2"
+      }
+    ]
+  },
+  {
+    "NomeEspaco": "",
+    "Reservas": [
+      {
+        "NomeUtilizador": "",
+        "DataHoraReserva": "2025-04-22T23:23:42.5596158+01:00",
+        "Espaco": ""
+      }
+    ]
+  },
+  {
+    "NomeEspaco": "Mais um espa\u00E7o",
+    "Reservas": [
+      {
+        "NomeUtilizador": "Teste",
+        "DataHoraReserva": "2025-04-22T23:23:42.5596158+01:00",
+        "Espaco": "Mais um espa\u00E7o"
+      }
+    ]
+  },
+  {
+    "NomeEspaco": "Sala 3",
+    "Reservas": [
+      {
+        "NomeUtilizador": "Novo teste",
+        "DataHoraReserva": "2025-04-22T23:24:58.3013648+01:00",
+        "Espaco": "Sala 3"
+      }
+    ]
+  },
+  {
+    "NomeEspaco": "Audit\u00F3rio",
+    "Reservas": [
+      {
+        "NomeUtilizador": "Vasco Lopes",
+        "DataHoraReserva": "2025-04-24T23:39:39.013",
+        "Espaco": "Audit\u00F3rio"
+      },
+      {
+        "NomeUtilizador": "Vasco Lopes",
+        "DataHoraReserva": "2025-04-25T09:00:42.781",
+        "Espaco": "Audit\u00F3rio"
+      },
+      {
+        "NomeUtilizador": "User novo",
+        "DataHoraReserva": "2025-04-26T00:00:30.087",
+        "Espaco": "Audit\u00F3rio"
+      }
+    ]
+  }
+]
