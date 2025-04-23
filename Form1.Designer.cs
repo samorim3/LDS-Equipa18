@@ -1,19 +1,32 @@
+/*
+ ============================================================================
+ UC: 21178 - Laboratório de Software
+ Projeto: Sistema de Reservas de Espaços
+ Autor: João Flores (Aluno n.º 2301427)
+
+ Este código faz parte do trabalho de grupo desenvolvido na unidade curricular.
+ Integra-se com a lógica de reservas do colega Vasco Lopes (Model/Persistência).
+ 
+ Última modificação: [23/04/2025]
+
+ ============================================================================
+*/
+
 namespace ReservaEspacos.View
 {
     partial class Form1
     {
-        // Componentes visuais da janela
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Button btnVerEspacos;
         private System.Windows.Forms.Button btnReservar;
+        private System.Windows.Forms.Button btnVerReservas;
         private System.Windows.Forms.TextBox txtNome;
-        private System.Windows.Forms.TextBox txtEspaco;
+        private System.Windows.Forms.ComboBox cmbEspaco;
         private System.Windows.Forms.DateTimePicker datePicker;
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.Label lblEspaco;
         private System.Windows.Forms.Label lblData;
 
-        // Libertar memória quando o formulário for fechado
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -23,13 +36,13 @@ namespace ReservaEspacos.View
             base.Dispose(disposing);
         }
 
-        // Método que configura todos os elementos gráficos da janela
         private void InitializeComponent()
         {
             this.btnVerEspacos = new System.Windows.Forms.Button();
             this.btnReservar = new System.Windows.Forms.Button();
+            this.btnVerReservas = new System.Windows.Forms.Button();
             this.txtNome = new System.Windows.Forms.TextBox();
-            this.txtEspaco = new System.Windows.Forms.TextBox();
+            this.cmbEspaco = new System.Windows.Forms.ComboBox();
             this.datePicker = new System.Windows.Forms.DateTimePicker();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblEspaco = new System.Windows.Forms.Label();
@@ -50,9 +63,10 @@ namespace ReservaEspacos.View
             this.lblEspaco.Size = new System.Drawing.Size(120, 20);
             this.lblEspaco.Text = "Espaço a reservar:";
 
-            // Caixa de texto para o espaço
-            this.txtEspaco.Location = new System.Drawing.Point(150, 47);
-            this.txtEspaco.Size = new System.Drawing.Size(200, 23);
+            // ComboBox para o espaço
+            this.cmbEspaco.Location = new System.Drawing.Point(150, 47);
+            this.cmbEspaco.Size = new System.Drawing.Size(200, 23);
+            this.cmbEspaco.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 
             // Label "Data e hora"
             this.lblData.Location = new System.Drawing.Point(12, 85);
@@ -63,8 +77,8 @@ namespace ReservaEspacos.View
             this.datePicker.Location = new System.Drawing.Point(150, 82);
             this.datePicker.Size = new System.Drawing.Size(200, 23);
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.datePicker.CustomFormat = "dd/MM/yyyy HH:mm"; // Mostra data e hora
-            this.datePicker.ShowUpDown = true; // Usa setas em vez de calendário
+            this.datePicker.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.datePicker.ShowUpDown = true;
 
             // Botão "Ver espaços disponíveis"
             this.btnVerEspacos.Location = new System.Drawing.Point(12, 130);
@@ -78,16 +92,23 @@ namespace ReservaEspacos.View
             this.btnReservar.Text = "Reservar espaço";
             this.btnReservar.Click += new System.EventHandler(this.btnReservar_Click);
 
+            // Botão "Ver reservas existentes"
+            this.btnVerReservas.Location = new System.Drawing.Point(12, 170);
+            this.btnVerReservas.Size = new System.Drawing.Size(338, 30);
+            this.btnVerReservas.Text = "Ver reservas existentes";
+            this.btnVerReservas.Click += new System.EventHandler(this.btnVerReservas_Click);
+
             // Propriedades do formulário
-            this.ClientSize = new System.Drawing.Size(384, 181);
+            this.ClientSize = new System.Drawing.Size(384, 220);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.txtNome);
             this.Controls.Add(this.lblEspaco);
-            this.Controls.Add(this.txtEspaco);
+            this.Controls.Add(this.cmbEspaco);
             this.Controls.Add(this.lblData);
             this.Controls.Add(this.datePicker);
             this.Controls.Add(this.btnVerEspacos);
             this.Controls.Add(this.btnReservar);
+            this.Controls.Add(this.btnVerReservas);
             this.Name = "Form1";
             this.Text = "Reserva de Espaços";
             this.ResumeLayout(false);
