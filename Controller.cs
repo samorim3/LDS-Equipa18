@@ -7,11 +7,10 @@
  Este código faz parte do trabalho de grupo desenvolvido na unidade curricular.
  Integra-se com a lógica de reservas do colega Vasco Lopes (Model/Persistência).
  
- Última modificação: [23/04/2025]
+ Última modificação: [10/05/2025]
 
  ============================================================================
 */
-
 
 using System;
 using System.Collections.Generic;
@@ -30,9 +29,11 @@ namespace ReservaEspacos
             return gestor.ObterNomesEspacos();
         }
 
-        // Método para criar uma reserva
-        public static bool CriarReserva(string nome, string espaco, DateTime dataHora)
+        // Método para criar uma reserva e devolver a reserva criada, se for bem-sucedido
+        public static bool CriarReserva(string nome, string espaco, DateTime dataHora, out Reserva reservaCriada)
         {
+            reservaCriada = null;
+
             if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(espaco))
                 return false;
 
@@ -42,13 +43,25 @@ namespace ReservaEspacos
                 Espaco = espaco,
                 DataHoraReserva = dataHora
             };
-            return gestor.CriarReserva(novaReserva);
+
+            bool sucesso = gestor.CriarReserva(novaReserva);
+
+            if (sucesso)
+                reservaCriada = novaReserva;
+
+            return sucesso;
         }
 
-        // Novo método: obter todas as reservas existentes
+        // Método para obter todas as reservas existentes
         public static List<Reserva> ObterReservas()
         {
             return gestor.ObterReservas();
+        }
+
+        // Método para exportar a reserva para um ficheiro PDF
+        public static void ExportarReservaParaPDF(Reserva reserva, string caminhoFicheiro)
+        {
+            PDFGenerator.GerarComprovativo(reserva, caminhoFicheiro);
         }
     }
 }
