@@ -7,7 +7,7 @@
  Este código faz parte do trabalho de grupo desenvolvido na unidade curricular.
  Integra-se com a lógica de reservas do colega Vasco Lopes (Model/Persistência).
  
- Última modificação: [23/04/2025]
+ Última modificação: [10/05/2025]
 
  ============================================================================
 */
@@ -54,12 +54,30 @@ namespace ReservaEspacos.View
                 return;
             }
 
-            bool sucesso = Controller.CriarReserva(nome, espaco, data);
+            // Tentar criar a reserva e obter a reserva criada
+            bool sucesso = Controller.CriarReserva(nome, espaco, data, out var reservaCriada);
 
             if (sucesso)
+            {
                 MessageBox.Show("Reserva criada com sucesso!");
+
+                // Perguntar ao utilizador onde guardar o comprovativo em PDF
+                using (SaveFileDialog saveDialog = new SaveFileDialog())
+                {
+                    saveDialog.Title = "Guardar comprovativo de reserva";
+                    saveDialog.Filter = "Ficheiro PDF (*.pdf)|*.pdf";
+                    saveDialog.FileName = "comprovativo_reserva.pdf";
+
+                    if (saveDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        Controller.ExportarReservaParaPDF(reservaCriada, saveDialog.FileName);
+                    }
+                }
+            }
             else
+            {
                 MessageBox.Show("Erro: o espaço já está reservado para essa data/hora.");
+            }
         }
 
         // Evento do botão "Ver reservas existentes"
