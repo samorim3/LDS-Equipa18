@@ -26,27 +26,41 @@ namespace ReservaEspacos
         // Método para obter a lista de espaços disponíveis (todos os nomes de espaços com reservas)
         public static List<string> ObterEspacos()
         {
-            return gestor.ObterNomesEspacos();
+            try
+            {
+                return gestor.ObterNomesEspacos();
+            }
+            catch (Exception ex)
+            {
+                RegistoLogs.Escrever($"Erro em ObterEspacos: {ex.Message}");
+                return new List<string>();
+            }
         }
 
         // Método para obter a lista de espaços disponíveis para uma data/hora específica
         public static List<string> ObterEspacosDisponiveisPara(DateTime dataHora)
         {
-            // Normaliza segundos e milissegundos
-            DateTime normalizado = dataHora.AddSeconds(-dataHora.Second).AddMilliseconds(-dataHora.Millisecond);
-
-            var todosEspacos = gestor.ObterNomesEspacos();
-            var disponiveis = new List<string>();
-
-            foreach (var espaco in todosEspacos)
+            try
             {
-                if (gestor.VerificarDisponibilidade(espaco, normalizado))
-                {
-                    disponiveis.Add(espaco);
-                }
-            }
+                DateTime normalizado = dataHora.AddSeconds(-dataHora.Second).AddMilliseconds(-dataHora.Millisecond);
+                var todosEspacos = gestor.ObterNomesEspacos();
+                var disponiveis = new List<string>();
 
-            return disponiveis;
+                foreach (var espaco in todosEspacos)
+                {
+                    if (gestor.VerificarDisponibilidade(espaco, normalizado))
+                    {
+                        disponiveis.Add(espaco);
+                    }
+                }
+
+                return disponiveis;
+            }
+            catch (Exception ex)
+            {
+                RegistoLogs.Escrever($"Erro em ObterEspacosDisponiveisPara: {ex.Message}");
+                return new List<string>();
+            }
         }
 
         // Método para criar uma reserva e devolver a reserva criada, se for bem-sucedido
@@ -54,34 +68,57 @@ namespace ReservaEspacos
         {
             reservaCriada = null;
 
-            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(espaco))
-                return false;
-
-            var novaReserva = new Reserva
+            try
             {
-                NomeUtilizador = nome,
-                Espaco = espaco,
-                DataHoraReserva = dataHora
-            };
+                if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(espaco))
+                    return false;
 
-            bool sucesso = gestor.CriarReserva(novaReserva);
+                var novaReserva = new Reserva
+                {
+                    NomeUtilizador = nome,
+                    Espaco = espaco,
+                    DataHoraReserva = dataHora
+                };
 
-            if (sucesso)
-                reservaCriada = novaReserva;
+                bool sucesso = gestor.CriarReserva(novaReserva);
 
-            return sucesso;
+                if (sucesso)
+                    reservaCriada = novaReserva;
+
+                return sucesso;
+            }
+            catch (Exception ex)
+            {
+                RegistoLogs.Escrever($"Erro em CriarReserva: {ex.Message}");
+                return false;
+            }
         }
 
         // Método para obter todas as reservas existentes
         public static List<Reserva> ObterReservas()
         {
-            return gestor.ObterReservas();
+            try
+            {
+                return gestor.ObterReservas();
+            }
+            catch (Exception ex)
+            {
+                RegistoLogs.Escrever($"Erro em ObterReservas: {ex.Message}");
+                return new List<Reserva>();
+            }
         }
 
         // Método para exportar a reserva para um ficheiro PDF
         public static void ExportarReservaParaPDF(Reserva reserva, string caminhoFicheiro)
         {
-            PDFGenerator.GerarComprovativo(reserva, caminhoFicheiro);
+            try
+            {
+                PDFGenerator.GerarComprovativo(reserva, caminhoFicheiro);
+            }
+            catch (Exception ex)
+            {
+                RegistoLogs.Escrever($"Erro ao exportar PDF: {ex.Message}");
+            }
         }
     }
 }
