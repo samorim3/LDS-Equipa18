@@ -2,13 +2,13 @@
  UC: 21178 - Laboratório de Software
  Sistema de Reservas de Espaços
 
- Versão 3
- Separação da lógica de persistência em classe externa
+ Versão 4
+ Modificação da Data/Hora da reserva para detetar duplicados (TI5)
 
  LDS-Equipa18
  Aluno responsável pelo código: 2202009 - Vasco Lopes
 
- Última modificação : 22 / 04 / 2025
+ Última modificação : 11 / 05 / 2025
 */
 
 using System;
@@ -61,12 +61,30 @@ namespace ReservaEspacos.Model
             var espaco = espacos.FirstOrDefault(e => e.NomeEspaco == nomeEspaco);
             if (espaco == null) return true;
 
-            return !espaco.Reservas.Any(r => r.DataHoraReserva == dataHora);
+            // Arredonda a data/hora para os minutos (ignora segundos e milissegundos, para facilitar a deteção de duplicados)
+            DateTime alvo = new DateTime(dataHora.Year, dataHora.Month, dataHora.Day, dataHora.Hour, dataHora.Minute, 0);
+
+            return !espaco.Reservas.Any(r =>
+            {
+                DateTime reserva = new DateTime(r.DataHoraReserva.Year, r.DataHoraReserva.Month, r.DataHoraReserva.Day,
+                                                r.DataHoraReserva.Hour, r.DataHoraReserva.Minute, 0);
+                return reserva == alvo;
+            });
         }
 
         // Cria uma nova reserva, se for possível
         public bool CriarReserva(Reserva novaReserva)
         {
+            // Arredonda a data/hora da nova reserva, para terminar em minutos
+            novaReserva.DataHoraReserva = new DateTime(
+                novaReserva.DataHoraReserva.Year,
+                novaReserva.DataHoraReserva.Month,
+                novaReserva.DataHoraReserva.Day,
+                novaReserva.DataHoraReserva.Hour,
+                novaReserva.DataHoraReserva.Minute,
+                0
+            );
+
             // Tenta encontrar o espaço
             var espaco = espacos.FirstOrDefault(e => e.NomeEspaco == novaReserva.Espaco);
 

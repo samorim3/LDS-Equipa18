@@ -61,6 +61,11 @@
         "NomeUtilizador": "Novo teste",
         "DataHoraReserva": "2025-04-22T23:24:58.3013648+01:00",
         "Espaco": "Sala 3"
+      },
+      {
+        "NomeUtilizador": "Vasco Lopes",
+        "DataHoraReserva": "2025-05-11T14:09:00",
+        "Espaco": "Sala 3"
       }
     ]
   },
@@ -80,6 +85,16 @@
       {
         "NomeUtilizador": "User novo",
         "DataHoraReserva": "2025-04-26T00:00:30.087",
+        "Espaco": "Audit\u00F3rio"
+      },
+      {
+        "NomeUtilizador": "Vasco Lopes",
+        "DataHoraReserva": "2025-05-11T14:09:07.3886837+01:00",
+        "Espaco": "Audit\u00F3rio"
+      },
+      {
+        "NomeUtilizador": "Teste Colis\u00E3o",
+        "DataHoraReserva": "2025-05-11T14:09:31.345",
         "Espaco": "Audit\u00F3rio"
       }
     ]
