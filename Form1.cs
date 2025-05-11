@@ -7,7 +7,7 @@
  Este código faz parte do trabalho de grupo desenvolvido na unidade curricular.
  Integra-se com a lógica de reservas do colega Vasco Lopes (Model/Persistência).
  
- Última modificação: [10/05/2025]
+ Última modificação: [11/05/2025]
 
  ============================================================================
 */
@@ -37,8 +37,18 @@ namespace ReservaEspacos.View
         // Evento do botão "Ver espaços disponíveis"
         private void btnVerEspacos_Click(object sender, EventArgs e)
         {
-            var espacos = Controller.ObterEspacos();
-            MessageBox.Show(string.Join("\n", espacos), "Espaços disponíveis");
+            DateTime dataSelecionada = datePicker.Value;
+
+            var espacosDisponiveis = Controller.ObterEspacosDisponiveisPara(dataSelecionada);
+
+            if (espacosDisponiveis.Count == 0)
+            {
+                MessageBox.Show("Não há espaços disponíveis para a data/hora selecionada.");
+            }
+            else
+            {
+                MessageBox.Show(string.Join("\n", espacosDisponiveis), "Espaços disponíveis");
+            }
         }
 
         // Evento do botão "Reservar espaço"
