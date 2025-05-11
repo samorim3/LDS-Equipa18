@@ -7,7 +7,7 @@
  Este código faz parte do trabalho de grupo desenvolvido na unidade curricular.
  Integra-se com a lógica de reservas do colega Vasco Lopes (Model/Persistência).
  
- Última modificação: [10/05/2025]
+ Última modificação: [11/05/2025]
 
  ============================================================================
 */
@@ -23,10 +23,30 @@ namespace ReservaEspacos
     {
         private static GestorReservas gestor = new GestorReservas();
 
-        // Método para obter a lista de espaços disponíveis
+        // Método para obter a lista de espaços disponíveis (todos os nomes de espaços com reservas)
         public static List<string> ObterEspacos()
         {
             return gestor.ObterNomesEspacos();
+        }
+
+        // Método para obter a lista de espaços disponíveis para uma data/hora específica
+        public static List<string> ObterEspacosDisponiveisPara(DateTime dataHora)
+        {
+            // Normaliza segundos e milissegundos
+            DateTime normalizado = dataHora.AddSeconds(-dataHora.Second).AddMilliseconds(-dataHora.Millisecond);
+
+            var todosEspacos = gestor.ObterNomesEspacos();
+            var disponiveis = new List<string>();
+
+            foreach (var espaco in todosEspacos)
+            {
+                if (gestor.VerificarDisponibilidade(espaco, normalizado))
+                {
+                    disponiveis.Add(espaco);
+                }
+            }
+
+            return disponiveis;
         }
 
         // Método para criar uma reserva e devolver a reserva criada, se for bem-sucedido
