@@ -1,0 +1,6 @@
+2025-05-11 18:08:55 - Dados carregados com sucesso.
+2025-05-11 18:09:04 - Dados guardados com sucesso.
+2025-05-11 18:09:04 - Reserva criada: Vasco Lopes - Sala 1 - 11/05/2025 18:08:00
+2025-05-11 18:09:34 - Reserva rejeitada: Espaço 'Sala 1' indisponível para 11/05/2025 18:08:00.
+2025-05-11 18:15:31 - Os dados foram carregados do ficheiro com sucesso.
+2025-05-11 18:15:31 - Dados carregados com sucesso.

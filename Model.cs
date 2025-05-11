@@ -2,8 +2,8 @@
  UC: 21178 - Laboratório de Software
  Sistema de Reservas de Espaços
 
- Versão 4
- Modificação da Data/Hora da reserva para detetar duplicados (TI5)
+ Versão 5
+ Integração com RegistoLogs e gestão de erros
 
  LDS-Equipa18
  Aluno responsável pelo código: 2202009 - Vasco Lopes
@@ -45,14 +45,31 @@ namespace ReservaEspacos.Model
 
         public GestorReservas()
         {
-            persistencia = new PersistenciaDados();
-            espacos = persistencia.Carregar();
+            try
+            {
+                persistencia = new PersistenciaDados();
+                espacos = persistencia.Carregar();
+                RegistoLogs.Escrever("Dados carregados com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                espacos = new List<Espaco>();
+                RegistoLogs.Escrever($"Erro ao carregar dados: {ex.Message}");
+            }
         }
 
         // Guardar os dados -> persistência
         private void GuardarDados()
         {
-            persistencia.Guardar(espacos);
+            try
+            {
+                persistencia.Guardar(espacos);
+                RegistoLogs.Escrever("Dados guardados com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                RegistoLogs.Escrever($"Erro ao guardar dados: {ex.Message}");
+            }
         }
 
         // Verifica se um espaço está disponível numa dada data/hora
@@ -75,36 +92,46 @@ namespace ReservaEspacos.Model
         // Cria uma nova reserva, se for possível
         public bool CriarReserva(Reserva novaReserva)
         {
-            // Arredonda a data/hora da nova reserva, para terminar em minutos
-            novaReserva.DataHoraReserva = new DateTime(
-                novaReserva.DataHoraReserva.Year,
-                novaReserva.DataHoraReserva.Month,
-                novaReserva.DataHoraReserva.Day,
-                novaReserva.DataHoraReserva.Hour,
-                novaReserva.DataHoraReserva.Minute,
-                0
-            );
-
-            // Tenta encontrar o espaço
-            var espaco = espacos.FirstOrDefault(e => e.NomeEspaco == novaReserva.Espaco);
-
-            // Se não existir, cria novo
-            if (espaco == null)
+            try
             {
-                espaco = new Espaco { NomeEspaco = novaReserva.Espaco };
-                espacos.Add(espaco);
+                // Arredonda a data/hora da nova reserva, para terminar em minutos
+                novaReserva.DataHoraReserva = new DateTime(
+                    novaReserva.DataHoraReserva.Year,
+                    novaReserva.DataHoraReserva.Month,
+                    novaReserva.DataHoraReserva.Day,
+                    novaReserva.DataHoraReserva.Hour,
+                    novaReserva.DataHoraReserva.Minute,
+                    0
+                );
+
+                // Tenta encontrar o espaço
+                var espaco = espacos.FirstOrDefault(e => e.NomeEspaco == novaReserva.Espaco);
+
+                // Se não existir, cria novo
+                if (espaco == null)
+                {
+                    espaco = new Espaco { NomeEspaco = novaReserva.Espaco };
+                    espacos.Add(espaco);
+                }
+
+                // Verificar a disponibilidade
+                if (!VerificarDisponibilidade(novaReserva.Espaco, novaReserva.DataHoraReserva))
+                {
+                    RegistoLogs.Escrever($"Reserva rejeitada: Espaço '{novaReserva.Espaco}' indisponível para {novaReserva.DataHoraReserva}.");
+                    return false;
+                }
+
+                // Adicionar a reserva e guardar
+                espaco.Reservas.Add(novaReserva);
+                GuardarDados();
+                RegistoLogs.Escrever($"Reserva criada: {novaReserva.NomeUtilizador} - {novaReserva.Espaco} - {novaReserva.DataHoraReserva}");
+                return true;
             }
-
-            // Verificar a disponibilidade
-            if (!VerificarDisponibilidade(novaReserva.Espaco, novaReserva.DataHoraReserva))
+            catch (Exception ex)
             {
+                RegistoLogs.Escrever($"Erro ao criar reserva: {ex.Message}");
                 return false;
             }
-
-            // Adicionar a reserva e guardar
-            espaco.Reservas.Add(novaReserva);
-            GuardarDados();
-            return true;
         }
 
         // Retornar todos os nomes de espaços com pelo menos uma reserva
